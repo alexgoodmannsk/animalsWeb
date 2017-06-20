@@ -1,5 +1,8 @@
 package ru.alex.servlets;
 
+import ru.alex.models.User;
+import ru.alex.store.JdbcStorage;
+import ru.alex.store.Storage;
 import ru.alex.store.UserCache;
 
 import javax.servlet.RequestDispatcher;
@@ -14,7 +17,7 @@ import java.io.IOException;
  */
 public class UserViewServlet extends HttpServlet {
 
-    private final UserCache USER_CACHE = UserCache.getInstance();
+    private UserCache USER_CACHE = UserCache.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,4 +26,9 @@ public class UserViewServlet extends HttpServlet {
         dispatcher.forward(req, resp);
     }
 
+    @Override
+    public void destroy() {
+        super.destroy();
+        USER_CACHE.close();
+    }
 }

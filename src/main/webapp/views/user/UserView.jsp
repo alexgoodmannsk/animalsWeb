@@ -7,6 +7,7 @@
 </head>
 <body>
 <a href="${pageContext.servletContext.contextPath}/views/user/CreateUser.jsp">Добавить пользователя</a>
+
 <table border="1">
     <tr>
         <td>ID</td>
@@ -25,6 +26,7 @@
             </td>
         </tr>
     </c:forEach>
+
 </table>
 </body>
 </html>

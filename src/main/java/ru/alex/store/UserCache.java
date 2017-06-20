@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UserCache implements Storage {
     private static final UserCache INSTANCE = new UserCache();
 
-    private final Storage storage = new MemoryStorage();
+    private final Storage storage = new JdbcStorage();
 
     public static UserCache getInstance() {
         return INSTANCE;
