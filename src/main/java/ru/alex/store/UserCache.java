@@ -8,44 +8,53 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by PC1 on 19.06.2017.
  */
-public class UserCache{
+public class UserCache implements Storage {
     private static final UserCache INSTANCE = new UserCache();
 
-    private final ConcurrentHashMap<Integer,User> users = new ConcurrentHashMap<Integer, User>();
+    private final Storage storage = new MemoryStorage();
 
     public static UserCache getInstance() {
         return INSTANCE;
     }
 
+    @Override
     public Collection<User> values() {
-        return INSTANCE.users.values();
+        return storage.values();
     }
 
+    @Override
     public int add(final User user) {
-        users.put(user.getId(),user);
-        return  user.getId();
+        return this.storage.add(user);
     }
 
-    public void edit(final User user) {this.users.replace(user.getId(),user);}
-
-    public void delete(final int id) {this.users.remove(id);}
-
-    public User get(final int id){return this.users.get(id);}
-
-    public int generateId(){
-        int id = 0;
-        while (users.containsKey(id)){
-            id++;
-        }
-        return id;
+    @Override
+    public void edit(final User user) {
+        this.storage.edit(user);
     }
 
-    public User findByLogin(final String login){
-        for (final User user : users.values()) {
-            if (user.getLogin().equals(login)) {
-                return user;
-            }
-        }
-        throw new IllegalStateException(String.format("Login %s not found", login));
+    @Override
+    public void delete(final int id) {
+        this.storage.delete(id);
+    }
+
+    @Override
+    public User get(final int id) {
+        return this.storage.get(id);
+    }
+
+    @Override
+    public User findByLogin(final String login) {
+        return this.storage.findByLogin(login);
+    }
+
+    @Override
+    public int generateId() {
+        return this.storage.generateId();
+    }
+
+    @Override
+    public void close() {
+        this.storage.close();
     }
 }
+
