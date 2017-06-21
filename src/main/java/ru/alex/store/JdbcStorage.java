@@ -64,12 +64,28 @@ public class JdbcStorage implements Storage {
 
     @Override
     public void edit(User user) {
+        try (final PreparedStatement statement = this.connection.prepareStatement("update users set name = (?), email = (?) where users.uid = (?)")) {
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getEmail());
+            statement.setInt(3, user.getId());
+            statement.executeUpdate();
+            return;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
     @Override
     public void delete(int id) {
-
+        try (final PreparedStatement statement = this.connection.prepareStatement(" delete from users as users where users.uid=(?)")) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            return;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        throw new IllegalStateException(String.format("User %s does not exists", id));
     }
 
     @Override
@@ -78,7 +94,7 @@ public class JdbcStorage implements Storage {
             statement.setInt(1, id);
             try (final ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
-                    return new User(rs.getInt("uid"), rs.getString("name"), null);
+                    return new User(rs.getInt("uid"), rs.getString("name"), rs.getString("email"));
                 }
             }
         } catch (SQLException e) {
@@ -89,12 +105,12 @@ public class JdbcStorage implements Storage {
 
     @Override
     public User findByLogin(String login) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public int generateId() {
-        return 0;
+        return -1;
     }
 
     @Override

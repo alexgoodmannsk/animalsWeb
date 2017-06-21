@@ -18,11 +18,24 @@ import static org.junit.Assert.*;
 public class JdbcStorageTest {
 
     @Test
-    public void createConnect(){
+    public void addUserTest(){
         final JdbcStorage storage = new JdbcStorage();
         final int id = storage.add(new User(-1,"test","12341234"));
         final User user = storage.get(id);
         assertEquals(id, user.getId());
+        storage.close();
+    }
+
+    @Test
+    public void deleteUserTest(){
+        final JdbcStorage storage = new JdbcStorage();
+        final int id = storage.add(new User(-1,"test2","12341234"));
+        final User user = storage.get(id);
+        assertEquals(id, user.getId());
+        int sizeBefore = storage.values().size();
+        storage.delete(id);
+        int sizeAfter = storage.values().size();
+        assertEquals(sizeAfter+1,sizeBefore);
         storage.close();
     }
 

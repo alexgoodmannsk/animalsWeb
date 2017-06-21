@@ -22,7 +22,22 @@
           <version>42.1.1</version>
       </dependency>
 
-
+      <!--Hibernate and pool-->
+      <dependency>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate-c3p0</artifactId>
+          <version>5.2.10.Final</version>
+      </dependency>
+      <dependency>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate-core</artifactId>
+          <version>5.2.10.Final</version>
+      </dependency>
+      <dependency>
+          <groupId>commons-dbcp</groupId>
+          <artifactId>commons-dbcp</artifactId>
+          <version>20030825.184428</version>
+      </dependency>
 
 
 

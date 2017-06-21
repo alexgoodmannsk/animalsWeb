@@ -24,14 +24,14 @@ public class UserDeleteServletTest extends Mockito{
         HttpServletResponse response = mock(HttpServletResponse.class);
 
         //проверяем пустое ли хранилище при создании
-        assertTrue(cache.values().isEmpty());
+        int sizeBefore = cache.values().size();
         //создаем в хранилище юзера
-        cache.add(new User(1,"test","test"));
+        String idB = String.valueOf(cache.add(new User(1,"test","test")));
         //проверяем что в хранилище появился юзер
-        assertFalse(cache.values().isEmpty());
+        assertEquals(sizeBefore+1, cache.values().size());
 
         //устанавливаем требуемое значение id при вызове в запросе getParameter
-        when(request.getParameter("id")).thenReturn("1");
+        when(request.getParameter("id")).thenReturn(idB);
 
         //делаем тестируемый вызов doGet
         new UserDeleteServlet().doGet(request, response);
@@ -40,7 +40,7 @@ public class UserDeleteServletTest extends Mockito{
         verify(request, atLeast(1)).getParameter("id");
 
         //проверяем удалился ли нужный пользователь из базы
-        assertTrue(cache.values().isEmpty());
+        assertEquals(sizeBefore, cache.values().size());
 
     }
 }

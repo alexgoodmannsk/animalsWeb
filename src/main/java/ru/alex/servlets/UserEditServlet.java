@@ -16,20 +16,22 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class UserEditServlet extends HttpServlet {
 
-    final AtomicInteger ids = new AtomicInteger();
+//    final AtomicInteger ids = new AtomicInteger();
+    private static int ID = 0;
 
     private static final UserCache USER_CACHE = UserCache.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("user", USER_CACHE.get(Integer.valueOf(req.getParameter("id"))));
+        ID = Integer.valueOf(req.getParameter("id"));
+        req.setAttribute("user", USER_CACHE.get(ID));
         RequestDispatcher dispatcher = req.getRequestDispatcher("/views/user/EditUser.jsp");
         dispatcher.forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        this.USER_CACHE.edit(new User(this.ids.incrementAndGet(), req.getParameter("login"), req.getParameter("email")));
+        this.USER_CACHE.edit(new User(ID, req.getParameter("login"), req.getParameter("email")));
         resp.sendRedirect(String.format("%s%s", req.getContextPath(), "/user/view"));
     }
 }

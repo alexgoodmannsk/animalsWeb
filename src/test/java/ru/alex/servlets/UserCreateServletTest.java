@@ -27,15 +27,14 @@ public class UserCreateServletTest extends Mockito {
         when(request.getParameter("login")).thenReturn("test");
         when(request.getParameter("email")).thenReturn("test");
 
-        assertTrue(cache.values().isEmpty());
-
+        int sizeBefore = cache.values().size();
         new UserCreateServlet().doPost(request, response);
-
         verify(request, atLeast(1)).getParameter("login");
         verify(request, atLeast(1)).getParameter("email");
-        assertFalse(cache.values().isEmpty());
 
-        cache.delete(cache.findByLogin("test").getId());
+        int sizeAfter = cache.values().size();
+
+        assertEquals(sizeBefore+1, sizeAfter);
 
     }
 }
