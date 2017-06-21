@@ -9,8 +9,8 @@ public class User {
     private String login;
     private String email;
     private int id;
-//    private Role role;
-//    private List<Message> messages;
+    private Role role;
+    private List<Message> messages;
 
     public User() {
     }
@@ -21,7 +21,7 @@ public class User {
         this.email = email;
     }
 
-/*    public Role getRole() {
+    public Role getRole() {
         return role;
     }
 
@@ -36,7 +36,6 @@ public class User {
     public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
-*/
 
     public int getId() {
         return id;
